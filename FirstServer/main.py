@@ -2,11 +2,11 @@ from glob import escape
 from flask import Flask, render_template
 
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static')
 
 @app.route("/")
 def hello_world():
-    return render_template('Pori roky.html')
+    return render_template('First.html')
 
 @app.route("/hello/<name>")
 def hello(name):
@@ -23,4 +23,4 @@ def main():
     return "<p>The Main(base)</p>
     "<p>Hello, World! I`m Max(OrIgInSzz)</p>""'''
 
-app.run()
+app.run(debug=True)

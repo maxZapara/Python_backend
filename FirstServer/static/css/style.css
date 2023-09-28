@@ -1,0 +1,43 @@
+body{
+    background: black;
+}
+
+.nav{
+    width: 100%;
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background: linear-gradient(to right,rgba(0, 0, 0, 0),rgba(7, 117, 169, 0.777));
+
+}
+
+.nav-title {
+    margin-left: 2%;
+    width: 10%;
+    font-size: 30px;
+}
+
+.nav-list{
+    width: 20%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    list-style: none;
+}
+
+.nav-list li a{
+    text-decoration: none;
+    color: inherit;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.nav-profile{
+    width: 60%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
