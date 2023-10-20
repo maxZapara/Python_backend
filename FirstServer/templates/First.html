@@ -43,7 +43,7 @@
 
   <div class="upc-title">
     <h1>Upcoming movies</h1>
-    <a>Show</a>
+    <a href="http://127.0.0.1:5000/upcoming">Show</a>
   </div>
   <div class="upcoming">
     {% for movie in movies %}
@@ -60,6 +60,7 @@
   </div>
   <div class="rec-title">
     <h1>Recomended for you</h1>
+    <a href="http://127.0.0.1:5000/popular">Show</a>
   </div>
   <div class="recomended">
     {% for movie in popular %}
@@ -74,7 +75,36 @@
     </div>
     {% endfor %}
   </div>
+  <!-- <div class="page-btns">
+    {%for i in range(1, 6)%}
+    <div class="page-btn">
+      <a id="{{i}}" href="?page={{ i }}">{{ i }}</a>
+    </div>
+    {%endfor%}
+  </div>
 </div>
+<script>
+  let url = new URL(window.location.href)
+  let page = parseInt(url.searchParams.get('page'))
 
+  console.log('Page=', page)
+
+  let buttons=document.querySelector('.page-btns').querySelectorAll('a')
+
+  if (page){
+      let btn=buttons[page-1]
+      // console.log(btn)
+      if (btn){
+          btn.classList.add('active')
+      }
+  }else{
+      let btn=buttons[0]
+      // console.log(btn)
+      if (btn){
+          btn.classList.add('active')
+      }
+  }
+
+</script> -->
 </body>
 </html>

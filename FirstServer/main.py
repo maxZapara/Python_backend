@@ -1,12 +1,12 @@
 from glob import escape
 from flask import Flask, render_template, request
-from api import get_upcoming,get_images_base_path,get_popular
+from api import get_upcoming,get_popular
 
 
 app = Flask(__name__, static_url_path='/static')
 
 @app.route("/")
-def hello_world():
+def main_site():
     movies=get_upcoming()
     popular=get_popular()
     return render_template('First.html', movies=movies[0:4], popular=popular[0:4])
@@ -23,6 +23,11 @@ def base_path():
     movies=get_popular(page)
     return render_template('movie_list.html', movies=movies)
 
+@app.route("/upcoming")
+def base2_path():
+    page=request.args.get('page',1)
+    movies=get_upcoming(page)
+    return render_template('movie_list.html', movies=movies)
 
 '''@app.route("/main")
 def main():

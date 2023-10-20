@@ -134,3 +134,23 @@ body{
     width: 150px;
     height: 400px;
 }
+
+.page-btns{
+    display: flex;
+    justify-content: center;
+}
+
+.page-btn a {
+  
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    padding: 5px;
+    text-decoration: none;
+    border: 3px solid #5436A9;
+    border-radius: 5px;
+}
+
+.page-btn a.active{
+    background-color: #5436A9;
+}
