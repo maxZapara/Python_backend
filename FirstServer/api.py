@@ -8,21 +8,10 @@ def get_upcoming(page=3):
     global headers
     url = f"https://api.themoviedb.org/3/movie/upcoming?language=en-US&page={page}"
     response = requests.get(url, headers=headers)
-
     if response.status_code==200:
         data=response.json()
         return data.get('results')
     return[]
-
-# def get_images_base_path():
-#     global headers
-#     url = "https://api.themoviedb.org/3/configuration"
-#     response = requests.get(url, headers=headers)
-
-#     if response.status_code==200:
-#         data=response.json()
-#         return data.get('images').get('base_url')
-#     return('')
 
 def get_popular(page=1):
     global headers
@@ -33,6 +22,20 @@ def get_popular(page=1):
         return data.get('results')
     return []
 
+def get_top(page=2):
+    global headers
+    url = f"https://api.themoviedb.org/3/movie/top_rated?language=en-US&page={page}"
+    response = requests.get(url, headers=headers)
+    if response.status_code==200:
+        data=response.json()
+        return data.get('results')
+    return []
 
-# d=get_upcoming()
-# b=get_images_base_path()
+def get_movie_detalis(id):
+    global headers
+    url = f"https://api.themoviedb.org/3/movie/movie_id?language=en-US"
+    response = requests.get(url, headers=headers)
+    if response.status_code==200:
+        data=response.json()
+        return data
+    return {}

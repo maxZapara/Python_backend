@@ -1,6 +1,6 @@
 from glob import escape
 from flask import Flask, render_template, request
-from api import get_upcoming,get_popular
+from api import get_upcoming,get_popular,get_top,get_movie_detalis
 
 
 app = Flask(__name__, static_url_path='/static')
@@ -29,9 +29,17 @@ def base2_path():
     movies=get_upcoming(page)
     return render_template('movie_list.html', movies=movies)
 
-'''@app.route("/main")
-def main():
-    return "<p>The Main(base)</p>
-    "<p>Hello, World! I`m Max(OrIgInSzz)</p>""'''
+@app.route("/top")
+def base3_path():
+    page=request.args.get('page',1)
+    movies=get_top(page)
+    return render_template('movie_list.html', movies=movies)
+
+@app.route('/movie/<int:id>')
+def show_movie_detalis(id):
+    print('Id',id)
+    movie=get_movie_detalis(id)
+    print(movie)
+    return render_template('detalis.html')
 
 app.run(debug=True)
