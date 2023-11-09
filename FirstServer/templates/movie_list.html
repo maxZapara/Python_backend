@@ -1,29 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>Zaprar</title>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Griffy&display=swap" rel="stylesheet">
+{% extends 'base.html' %}
+{% block head %}
   <link rel="stylesheet" href="/static/css/style.css">
-  <link rel="stylesheet" href="/static/css/normalize.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <meta charset="utf-8">
-</head>
-<body>
+{% endblock %}
+{% block content %}
 
 <div class="nav">
-    <h1 class="nav-title">Zaprar</h1>
+  <h1 class="nav-title">Zaprar</h1>
 
-    <ul class="nav-list">
-        <li><a href="http://127.0.0.1:5000">Home</a></li>
-        <li><a href="" class="active">Popular</a></li>
-        <li><a href="">Top Rating</a></li>
-        </ul>
-        <div class="nav-profile">
-          <input type="text" placeholder="Search"/>
-          <img src="/static/bell 1.png"></img>
-          <img src="/static/gift 1.png"></img>
-        </div>
+  <ul class="nav-list">
+      <li><a href="http://127.0.0.1:5000/">Home</a></li>
+      <li><a href="" class="active">Movie List</a></li>
+      <li><a href="">Detalis</a></li>
+      </ul>
+      <div class="nav-profile">
+        <input type="text" placeholder="Search"/>
+        <img src="/static/bell 1.png"></img>
+        <img src="/static/gift 1.png"></img>
+      </div>
 </div>
 
 <div class="container">
@@ -74,5 +67,4 @@
         </script>
     
 </div>
-</body>
-</html>
+{% endblock %}

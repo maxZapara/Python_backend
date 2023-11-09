@@ -57,3 +57,70 @@ body{
     font-size:21px;
     padding-left: 15px;
 }
+
+.container{
+    width: 80%;
+    margin: 0 auto;
+    color:azure;
+}
+
+.headers{
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.header img{
+    width: 40%;
+}
+
+.header_desc{
+    display: flex;
+    flex-direction: colomn;
+    color:rgb(33, 127, 194);
+    font-family:'griffy',cursive;
+}
+
+.movie-rate{
+    display: flex;
+    color:rgb(85, 221, 221);
+}
+
+.movie-date{
+    display: flex;
+    color:rgb(85, 221, 221);
+}
+
+.movie-overview{
+    display: flex;
+    color:azure;
+    margin-top: 20px;
+    font-size: 25px;
+}
+
+.simmilar{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.rec-movie-rate{
+    display:flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.rec-title{
+    display: flex;
+    margin-top: 50px;
+}
+
+.rec-movie{
+    width: 150px;
+    height: 400px;
+}
+
+.rec-movie a img{
+    width: 200px;
+}

@@ -33,9 +33,26 @@ def get_top(page=2):
 
 def get_movie_detalis(id):
     global headers
-    url = f"https://api.themoviedb.org/3/movie/movie_id?language=en-US"
+    url = f"https://api.themoviedb.org/3/movie/{id}?language=en-US"
     response = requests.get(url, headers=headers)
     if response.status_code==200:
         data=response.json()
         return data
     return {}
+
+def get_simmilar_detalis(id):
+    global headers
+    url = f"https://api.themoviedb.org/3/movie/{id}/similar?language=en-US"
+    response = requests.get(url, headers=headers)
+    if response.status_code==200:
+        data=response.json()
+        return data.get('results')
+    
+def get_video_key(id):
+    global headers
+    url = f"https://api.themoviedb.org/3/movie/{id}/videos?language=en-US"
+    response = requests.get(url, headers=headers)
+    if response.status_code==200:
+        data=response.json().get('results')
+        return [video for video in data if video.get('type')=='Trailer']
+    return []

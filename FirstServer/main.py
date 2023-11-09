@@ -1,9 +1,11 @@
 from glob import escape
 from flask import Flask, render_template, request
-from api import get_upcoming,get_popular,get_top,get_movie_detalis
+from api import get_upcoming,get_popular,get_top,get_movie_detalis,get_simmilar_detalis, get_video_key
+from signupform import MyForm
 
 
 app = Flask(__name__, static_url_path='/static')
+app.config['SECRET_KEY']='hera'
 
 @app.route("/")
 def main_site():
@@ -39,7 +41,25 @@ def base3_path():
 def show_movie_detalis(id):
     print('Id',id)
     movie=get_movie_detalis(id)
-    print(movie)
-    return render_template('detalis.html')
+    simmilar_movies = get_simmilar_detalis(id)
+    videos=get_video_key(id)
+    video_key=None
+    if len(videos)>=1:
+        video_key=videos[0].get('key')
+    return render_template('detalis.html',movie=movie, simmilar_movies=simmilar_movies[0:4],video_key=video_key)
+
+@app.route('/registr',methods=["GET","POST"])
+def registr():
+    form = MyForm()
+    if form.validate_on_submit():
+        print(form)
+    return render_template('registr.html',form=form)
+  
+# @app.route('/submit', methods=['GET', 'POST'])
+# def submit():
+#     form = MyForm()
+#     if form.validate_on_submit():
+#         print(form)
+#     return render_template('submit.html', form=form)
 
 app.run(debug=True)
