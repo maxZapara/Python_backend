@@ -48,24 +48,45 @@
               <form id="stripe-login" action="/registr" method="POST">
                 <div class="field padding-bottom--24">
                     {{ form.csrf_token }}
-                    {{ form.name.label }} 
-                    {{ form.name(size=20) }}
+                    {{ form.username.label }} 
+                    {{ form.username(size=20,placeholder="Username") }}
+                    {% if form.username.errors %}
+                      <ul class="errors">
+                        {% for error in form.username.errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                      </ul>
+                    {% endif %}
                   </div>
                 <div class="field padding-bottom--24">
-                  <label for="email">Email</label>
-                  <input type="email" name="email">
+                  {{ form.email.label }} 
+                  {{ form.email(size=20,placeholder="Email") }}
+                  {% if form.email.errors %}
+                  <ul class="errors">
+                    {% for error in form.email.errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                  </ul>
+                  {% endif %}
                 </div>
                 <div class="field padding-bottom--24">
                   <div class="grid--50-50">
-                    <label for="password">Password</label>
+                    {{ form.password.label }} 
                     <div class="reset-pass">
                       <a href="#">Forgot your password?</a>
                     </div>
+                    {{ form.password(size=20,placeholder="Password") }}
+                    {% if form.password.errors %}
+                    <ul class="errors">
+                      {% for error in form.password.errors %}
+                      <li>{{ error }}</li>
+                      {% endfor %}
+                    </ul>
+                    {% endif %}
                   </div>
-                  <input type="password" name="password">
                 </div>
                 <div class="field field-checkbox padding-bottom--24 flex-flex align-center">
-                  <label for="checkbox">
+                    <label for="checkbox">
                     <input type="checkbox" name="checkbox"> Remember password
                   </label>
                 </div>
