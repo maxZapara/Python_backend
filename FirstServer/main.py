@@ -1,7 +1,7 @@
 from glob import escape
 from flask import Flask, render_template, request
 from api import get_upcoming,get_popular,get_top,get_movie_detalis,get_simmilar_detalis, get_video_key
-from signupform import MyForm
+from signupform import RegistrForm, LoginForm
 
 
 app = Flask(__name__, static_url_path='/static')
@@ -13,11 +13,9 @@ def main_site():
     popular=get_popular()
     return render_template('First.html', movies=movies[0:4], popular=popular[0:4])
 
+users=[
 
-headers = {
-    "accept": "application/json",
-    "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmNzRjMzE3NWJjMGExNzNiMDkwZjkyZTljMjQ3NzRmNyIsInN1YiI6IjY0NzBlM2NmNzcwNzAwMDBkZjE0MDFjYiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.Y3zfcONHo2VXJV_CQbXmR56Kw0YqR296Bvqz_HbcbGU"
-}
+]
 
 @app.route("/popular")
 def base_path():
@@ -50,10 +48,19 @@ def show_movie_detalis(id):
 
 @app.route('/registr',methods=["GET","POST"])
 def registr():
-    form = MyForm()
+    form = RegistrForm()
     if form.validate_on_submit():
-        print(form)
+        user={'username':form.username.data,'email':form.email.data,'password':form.password.data}
+        print(user)
+        users.append(user)
     return render_template('registr.html',form=form)
+
+@app.route('/login',methods=["GET","POST"])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        pass
+    return render_template('login.html',form=form)
   
 # @app.route('/submit', methods=['GET', 'POST'])
 # def submit():
