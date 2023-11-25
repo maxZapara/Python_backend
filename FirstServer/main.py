@@ -1,5 +1,5 @@
 from glob import escape
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 from api import get_upcoming,get_popular,get_top,get_movie_detalis,get_simmilar_detalis, get_video_key
 from signupform import RegistrForm, LoginForm
 
@@ -53,13 +53,24 @@ def registr():
         user={'username':form.username.data,'email':form.email.data,'password':form.password.data}
         print(user)
         users.append(user)
+        return redirect('/')
     return render_template('registr.html',form=form)
 
 @app.route('/login',methods=["GET","POST"])
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        pass
+        user={'username':form.username.data,'password':form.password.data}
+        found=False
+        for registr in users:
+            if user['username']==registr['username'] and user['password']==registr['password']:
+                found=True
+                break
+        if found==False:
+            return render_template('login.html',form=form, error='Invalid username or password')
+        
+        return redirect('/')
+
     return render_template('login.html',form=form)
   
 # @app.route('/submit', methods=['GET', 'POST'])

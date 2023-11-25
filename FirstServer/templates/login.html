@@ -45,7 +45,9 @@
           <div class="formbg">
             <div class="formbg-inner padding-horizontal--48">
               <span class="padding-bottom--15">Sign in to your account</span>
-              <form id="stripe-login" action="/registr" method="POST">
+              <form id="stripe-login" action="/login" method="POST">
+                <h2>{{error}}</h2>
+
                 <div class="field padding-bottom--24">
                     {{ form.csrf_token }}
                     {{ form.username.label }} 
