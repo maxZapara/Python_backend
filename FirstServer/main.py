@@ -2,10 +2,15 @@ from glob import escape
 from flask import Flask, render_template, request, redirect
 from api import get_upcoming,get_popular,get_top,get_movie_detalis,get_simmilar_detalis, get_video_key
 from signupform import RegistrForm, LoginForm
-
+from database import db
 
 app = Flask(__name__, static_url_path='/static')
 app.config['SECRET_KEY']='hera'
+# configure the SQLite database, relative to the app instance folder
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///project.db"
+# initialize the app with the extension
+db.init_app(app)
+
 
 @app.route("/")
 def main_site():
@@ -53,7 +58,7 @@ def registr():
         user={'username':form.username.data,'email':form.email.data,'password':form.password.data}
         print(user)
         users.append(user)
-        return redirect('/')
+        return redirect('/login')
     return render_template('registr.html',form=form)
 
 @app.route('/login',methods=["GET","POST"])
@@ -72,12 +77,14 @@ def login():
         return redirect('/')
 
     return render_template('login.html',form=form)
-  
-# @app.route('/submit', methods=['GET', 'POST'])
-# def submit():
-#     form = MyForm()
-#     if form.validate_on_submit():
-#         print(form)
-#     return render_template('submit.html', form=form)
+
+# @app.route("/profile")
+# def profile():
+#     page=request.args.get('page',1)
+#     movies=get_upcoming(page)
+#     return render_template('profile.html')
+
+with app.app_context():
+    db.create_all()
 
 app.run(debug=True)
