@@ -2,7 +2,7 @@ from glob import escape
 from flask import Flask, render_template, request, redirect
 from api import get_upcoming,get_popular,get_top,get_movie_detalis,get_simmilar_detalis, get_video_key
 from signupform import RegistrForm, LoginForm
-from database import db
+from database import db,User
 
 app = Flask(__name__, static_url_path='/static')
 app.config['SECRET_KEY']='hera'
@@ -55,27 +55,27 @@ def show_movie_detalis(id):
 def registr():
     form = RegistrForm()
     if form.validate_on_submit():
-        user={'username':form.username.data,'email':form.email.data,'password':form.password.data}
-        print(user)
-        users.append(user)
+        user=User(username=form.username.data,
+              email=form.email.data,
+              password=form.password.data
+            )
+        db.session.add(user)
+        db.session.commit()
         return redirect('/login')
     return render_template('registr.html',form=form)
 
 @app.route('/login',methods=["GET","POST"])
 def login():
     form = LoginForm()
+    #print (User.query.all())
     if form.validate_on_submit():
-        user={'username':form.username.data,'password':form.password.data}
-        found=False
-        for registr in users:
-            if user['username']==registr['username'] and user['password']==registr['password']:
-                found=True
-                break
-        if found==False:
-            return render_template('login.html',form=form, error='Invalid username or password')
-        
-        return redirect('/')
 
+        db_user=User.query.filter_by(username=form.username.data).first()
+        if not db_user or db_user.password != form.password.data:
+            return render_template('login.html',form=form, error='Invalid username or password')
+        print (db_user)
+        return redirect('/')
+    
     return render_template('login.html',form=form)
 
 # @app.route("/profile")
@@ -85,6 +85,7 @@ def login():
 #     return render_template('profile.html')
 
 with app.app_context():
+    #db.drop_all()
     db.create_all()
 
 app.run(debug=True)
