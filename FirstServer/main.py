@@ -3,14 +3,20 @@ from flask import Flask, render_template, request, redirect
 from api import get_upcoming,get_popular,get_top,get_movie_detalis,get_simmilar_detalis, get_video_key
 from signupform import RegistrForm, LoginForm
 from database import db,User
+from flask_login import LoginManager, login_user, login_required, logout_user
+
 
 app = Flask(__name__, static_url_path='/static')
-app.config['SECRET_KEY']='hera'
+app.config['SECRET_KEY']='Sjenwomew'
 # configure the SQLite database, relative to the app instance folder
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///project.db"
 # initialize the app with the extension
 db.init_app(app)
 
+login_manager = LoginManager()
+
+login_manager.init_app(app)
+login_manager.login_view = "login"
 
 @app.route("/")
 def main_site():
@@ -21,6 +27,18 @@ def main_site():
 users=[
 
 ]
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+
+
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect("/")
 
 @app.route("/popular")
 def base_path():
@@ -41,6 +59,7 @@ def base3_path():
     return render_template('movie_list.html', movies=movies)
 
 @app.route('/movie/<int:id>')
+@login_required
 def show_movie_detalis(id):
     print('Id',id)
     movie=get_movie_detalis(id)
@@ -74,7 +93,10 @@ def login():
         if not db_user or db_user.password != form.password.data:
             return render_template('login.html',form=form, error='Invalid username or password')
         print (db_user)
+        login_user(db_user)
         return redirect('/')
+    
+
     
     return render_template('login.html',form=form)
 

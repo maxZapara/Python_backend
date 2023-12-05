@@ -42,3 +42,4 @@ class LoginForm(FlaskForm):
         Length(min=4, max=25),
         Regexp(r"(?=.*[a-z])(?=.*[A-Z]+)(?=.*\d)(?=.*[!@#$%&._])(?=.*[a-zA-Z\d]){4,}", message='Bad password')])
     checkbox = BooleanField('I Agree to Privacy Policy')
+

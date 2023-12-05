@@ -12,6 +12,9 @@
       <li><a href="">Movie List</a></li>
       <li><a href="">Detalis</a></li>
       </ul>
+      {% if current_user.is_authenticated %}
+      <a href="/logout">Logout</a>
+      {% endif %}
       <div class="nav-profile">
         <input type="text" placeholder="Search"/>
         <img src="/static/bell 1.png"></img>
