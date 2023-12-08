@@ -1,10 +1,10 @@
 from glob import escape
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, session
 from api import get_upcoming,get_popular,get_top,get_movie_detalis,get_simmilar_detalis, get_video_key
 from signupform import RegistrForm, LoginForm
 from database import db,User
 from flask_login import LoginManager, login_user, login_required, logout_user
-
+from datetime import timedelta
 
 app = Flask(__name__, static_url_path='/static')
 app.config['SECRET_KEY']='Sjenwomew'
@@ -17,6 +17,9 @@ login_manager = LoginManager()
 
 login_manager.init_app(app)
 login_manager.login_view = "login"
+app.config["REMEMBER_COOKIE_DURATION"] = timedelta(days=3)
+app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=40)
+      
 
 @app.route("/")
 def main_site():
@@ -24,9 +27,7 @@ def main_site():
     popular=get_popular()
     return render_template('First.html', movies=movies[0:4], popular=popular[0:4])
 
-users=[
 
-]
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -93,7 +94,8 @@ def login():
         if not db_user or db_user.password != form.password.data:
             return render_template('login.html',form=form, error='Invalid username or password')
         print (db_user)
-        login_user(db_user)
+        session.permanent=True
+        login_user(db_user,remember=True)
         return redirect('/')
     
 
