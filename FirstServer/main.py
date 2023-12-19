@@ -2,8 +2,8 @@ from glob import escape
 from flask import Flask, render_template, request, redirect, session
 from api import get_upcoming,get_popular,get_top,get_movie_detalis,get_simmilar_detalis, get_video_key
 from signupform import RegistrForm, LoginForm
-from database import db,User
-from flask_login import LoginManager, login_user, login_required, logout_user
+from database import db,User, Likes
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from datetime import timedelta
 
 app = Flask(__name__, static_url_path='/static')
@@ -53,6 +53,30 @@ def base2_path():
     movies=get_upcoming(page)
     return render_template('movie_list.html', movies=movies)
 
+@app.route("/likes_movies/<int:id>")
+@login_required
+def like_movie(id):        
+    movie=get_movie_detalis(id)
+    sent_movie = Likes.query.filter_by(title=movie.get('title'), user_id = current_user.id).first()
+    if sent_movie:
+        db.session.delete(sent_movie)
+        db.session.commit()
+    if not sent_movie:
+        liked_movie=Likes(
+            id=id,
+            title=movie.get('title'),
+            date=movie.get('release_date'),
+            rate=movie.get('vote_average'),
+            poster_path=f"http://image.tmbd.org/t/p/w200{movie.get('poster_path')}",
+            user_id=current_user.id
+        )
+        db.session.add(liked_movie)
+        db.session.commit()
+    
+
+    return redirect("/")
+    # return render_template('Likes_movies.html')
+
 @app.route("/top")
 def base3_path():
     page=request.args.get('page',1)
@@ -67,6 +91,8 @@ def show_movie_detalis(id):
     simmilar_movies = get_simmilar_detalis(id)
     videos=get_video_key(id)
     video_key=None
+
+    
     if len(videos)>=1:
         video_key=videos[0].get('key')
     return render_template('detalis.html',movie=movie, simmilar_movies=simmilar_movies[0:4],video_key=video_key)
@@ -102,11 +128,12 @@ def login():
     
     return render_template('login.html',form=form)
 
-# @app.route("/profile")
-# def profile():
-#     page=request.args.get('page',1)
-#     movies=get_upcoming(page)
-#     return render_template('profile.html')
+@app.route("/profile")
+@login_required
+def profile():
+    movies=current_user.liked_movies
+    print (movies)
+    return render_template('profile.html',movies=movies)
 
 with app.app_context():
     #db.drop_all()

@@ -28,11 +28,11 @@ class User(db.Model,UserMixin):
 class Likes(db.Model,UserMixin):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     title: Mapped[str] = mapped_column(String, nullable=False)
-    data: Mapped[str] = mapped_column(String, nullable=False)
+    date: Mapped[str] = mapped_column(String, nullable=False)
     rate: Mapped[str] = mapped_column(Numeric, nullable=False)
     poster_path: Mapped[str] = mapped_column(String, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     def __str__(self):
-       return f"User: {self.username}"
+       return f"Movie: {self.title}"
     def __repr__(self):
-       return f"User: {self.username}"
+       return f"Movie: {self.title}"
