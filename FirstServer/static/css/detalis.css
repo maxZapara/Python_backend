@@ -124,3 +124,7 @@ body{
 .rec-movie a img{
     width: 200px;
 }
+
+svg.liked{
+    color: red;
+}
