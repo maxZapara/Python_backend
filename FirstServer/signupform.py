@@ -3,6 +3,7 @@ from wtforms import StringField
 from flask_wtf import FlaskForm
 from wtforms.validators import DataRequired, Email, Length, Regexp, ValidationError
 from wtforms import StringField, PasswordField, EmailField, BooleanField
+from wtforms.widgets import TextArea
 
 def validate_username(form, username):
     from database import User
@@ -43,3 +44,10 @@ class LoginForm(FlaskForm):
         Regexp(r"(?=.*[a-z])(?=.*[A-Z]+)(?=.*\d)(?=.*[!@#$%&._])(?=.*[a-zA-Z\d]){4,}", message='Bad password')])
     checkbox = BooleanField('I Agree to Privacy Policy')
 
+class CommentForm(FlaskForm):
+    content=StringField('Comment', validators=[
+        DataRequired(),
+        Length(min=5, max=200)
+        ],
+        widget=TextArea()
+        )

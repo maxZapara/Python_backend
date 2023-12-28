@@ -128,3 +128,7 @@ body{
 svg.liked{
     color: red;
 }
+
+.comment{
+    margin-top: 90px;
+}

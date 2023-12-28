@@ -20,6 +20,7 @@ class User(db.Model,UserMixin):
     email: Mapped[str] = mapped_column(String,unique=True, nullable=False)
     password: Mapped[str] = mapped_column(String, unique=False, nullable=False)
     liked_movies = db.relationship('Likes', backref='user')
+    comments = db.relationship('Comment', backref='user')
     def __str__(self):
        return f"User: {self.username}"
     def __repr__(self):
@@ -36,3 +37,10 @@ class Likes(db.Model,UserMixin):
        return f"Movie: {self.title}"
     def __repr__(self):
        return f"Movie: {self.title}"
+    
+class Comment(db.Model,UserMixin):
+   id: Mapped[int] = mapped_column(Integer, primary_key=True)
+   #date: Mapped[str] = mapped_column(String, nullable=False)
+   content: Mapped[str] = mapped_column(String, nullable=False)
+   user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+   movie_id: Mapped[int] = mapped_column(Integer)

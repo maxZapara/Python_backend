@@ -1,8 +1,8 @@
 from glob import escape
 from flask import Flask, render_template, request, redirect, session
 from api import get_upcoming,get_popular,get_top,get_movie_detalis,get_simmilar_detalis, get_video_key
-from signupform import RegistrForm, LoginForm
-from database import db,User, Likes
+from signupform import RegistrForm, LoginForm, CommentForm
+from database import db,User, Likes, Comment
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from datetime import timedelta
 
@@ -55,7 +55,8 @@ def base2_path():
 
 @app.route("/likes_movies/<int:id>")
 @login_required
-def like_movie(id):        
+def like_movie(id): 
+    from flask import jsonify        
     movie=get_movie_detalis(id)
     sent_movie = Likes.query.filter_by(title=movie.get('title'), user_id = current_user.id).first()
     if sent_movie:
@@ -73,8 +74,7 @@ def like_movie(id):
         db.session.add(liked_movie)
         db.session.commit()
     
-
-    return redirect("/")
+    return jsonify({'status': 'success'})
     # return render_template('Likes_movies.html')
 
 @app.route("/top")
@@ -83,19 +83,30 @@ def base3_path():
     movies=get_top(page)
     return render_template('movie_list.html', movies=movies)
 
-@app.route('/movie/<int:id>')
+@app.route('/movie/<int:id>', methods=['GET','POST'])
 @login_required
 def show_movie_detalis(id):
+    form=CommentForm()
+    if form.validate_on_submit():
+
+        print('comment')
+        content=form.content.data
+        comment=Comment(content=content, user_id=current_user.id, film_id=id)
+        db.session.add(comment)
+        db.session.commit()
+        # print(comment)
     print('Id',id)
     movie=get_movie_detalis(id)
     simmilar_movies = get_simmilar_detalis(id)
     videos=get_video_key(id)
     video_key=None
 
+    sent_movie = Likes.query.filter_by(title=movie.get('title'), user_id = current_user.id).first()
+    liked=True if sent_movie else False
     
     if len(videos)>=1:
         video_key=videos[0].get('key')
-    return render_template('detalis.html',movie=movie, simmilar_movies=simmilar_movies[0:4],video_key=video_key)
+    return render_template('detalis.html', form=form, movie=movie, simmilar_movies=simmilar_movies[0:4],video_key=video_key, liked=liked)
 
 @app.route('/registr',methods=["GET","POST"])
 def registr():
@@ -127,6 +138,7 @@ def login():
 
     
     return render_template('login.html',form=form)
+
 
 @app.route("/profile")
 @login_required

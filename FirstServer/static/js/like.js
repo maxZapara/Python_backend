@@ -2,20 +2,22 @@ let heart=$('.some-info svg')
 
 console.log(heart)
 
-function sendrequest() {
+function sendrequest(film_id) {
     $.ajax({
-        url: "/profile",
-        method: "GET",        
-        dataType: "html",        
+        url: `/likes_movies/${film_id}`,
+        method: "GET",
+        dataType: "json",
         success: function (data) {
-            console.log(data)
+            console.log(data);
+            $(heart).toggleClass('liked');
         }
     });
 }
 
-sendrequest()
 
 $(heart).click(function (e) {
     e.preventDefault();
-    $(this).toggleClass('liked');
+    let film_id=$(this).data('film_id')
+    // console.log(film_id) 
+    sendrequest(film_id)
 });
