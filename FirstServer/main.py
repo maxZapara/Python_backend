@@ -88,18 +88,21 @@ def base3_path():
 def show_movie_detalis(id):
     form=CommentForm()
     if form.validate_on_submit():
-
-        print('comment')
         content=form.content.data
-        comment=Comment(content=content, user_id=current_user.id, film_id=id)
+        comment=Comment(content=content, user_id=current_user.id, movie_id=id)
         db.session.add(comment)
         db.session.commit()
-        # print(comment)
+
     print('Id',id)
     movie=get_movie_detalis(id)
+
     simmilar_movies = get_simmilar_detalis(id)
+    
     videos=get_video_key(id)
     video_key=None
+
+    comments=Comment.query.filter_by(movie_id=id).all()
+    print(comments)
 
     sent_movie = Likes.query.filter_by(title=movie.get('title'), user_id = current_user.id).first()
     liked=True if sent_movie else False

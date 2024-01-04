@@ -40,7 +40,7 @@ class Likes(db.Model,UserMixin):
     
 class Comment(db.Model,UserMixin):
    id: Mapped[int] = mapped_column(Integer, primary_key=True)
-   #date: Mapped[str] = mapped_column(String, nullable=False)
    content: Mapped[str] = mapped_column(String, nullable=False)
-   user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
    movie_id: Mapped[int] = mapped_column(Integer)
+   user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+   

@@ -47,7 +47,5 @@ class LoginForm(FlaskForm):
 class CommentForm(FlaskForm):
     content=StringField('Comment', validators=[
         DataRequired(),
-        Length(min=5, max=200)
-        ],
-        widget=TextArea()
-        )
+        Length(min=5, max=200)],
+        widget=TextArea())
