@@ -66,12 +66,17 @@
     </div>
     <div class="comment">
       <h1>Comments</h1>
-      <ul>{{ comments.get('comments') }}</ul>
       <form action="/movie/{{movie['id']}}" method="POST">
         {{ form.csrf_token }}
         <div class="comm">{{form.content(rows=3,colomuns=30)}}</div>
         <button type="submit">Publicate</button>
       </form>
+
+      {% for comment in comments %}
+
+      <p>{{ comment.content }}</p>
+
+      {% endfor %}
     </div>
   </div>  
     

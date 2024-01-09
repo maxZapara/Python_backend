@@ -1,10 +1,12 @@
 from glob import escape
 from flask import Flask, render_template, request, redirect, session
 from api import get_upcoming,get_popular,get_top,get_movie_detalis,get_simmilar_detalis, get_video_key
-from signupform import RegistrForm, LoginForm, CommentForm
+from signupform import CommentForm
 from database import db,User, Likes, Comment
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from datetime import timedelta
+
+from auth import auth
 
 app = Flask(__name__, static_url_path='/static')
 app.config['SECRET_KEY']='Sjenwomew'
@@ -16,13 +18,17 @@ db.init_app(app)
 login_manager = LoginManager()
 
 login_manager.init_app(app)
-login_manager.login_view = "login"
+login_manager.login_view = "auth.login"
 app.config["REMEMBER_COOKIE_DURATION"] = timedelta(days=3)
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=40)
+
+
+app.register_blueprint(auth)
       
 
 @app.route("/")
 def main_site():
+    print(app.url_map)
     movies=get_upcoming()
     popular=get_popular()
     return render_template('First.html', movies=movies[0:4], popular=popular[0:4])
@@ -109,39 +115,7 @@ def show_movie_detalis(id):
     
     if len(videos)>=1:
         video_key=videos[0].get('key')
-    return render_template('detalis.html', form=form, movie=movie, simmilar_movies=simmilar_movies[0:4],video_key=video_key, liked=liked)
-
-@app.route('/registr',methods=["GET","POST"])
-def registr():
-    form = RegistrForm()
-    if form.validate_on_submit():
-        user=User(username=form.username.data,
-              email=form.email.data,
-              password=form.password.data
-            )
-        db.session.add(user)
-        db.session.commit()
-        return redirect('/login')
-    return render_template('registr.html',form=form)
-
-@app.route('/login',methods=["GET","POST"])
-def login():
-    form = LoginForm()
-    #print (User.query.all())
-    if form.validate_on_submit():
-
-        db_user=User.query.filter_by(username=form.username.data).first()
-        if not db_user or db_user.password != form.password.data:
-            return render_template('login.html',form=form, error='Invalid username or password')
-        print (db_user)
-        session.permanent=True
-        login_user(db_user,remember=True)
-        return redirect('/')
-    
-
-    
-    return render_template('login.html',form=form)
-
+    return render_template('detalis.html', form=form, movie=movie, simmilar_movies=simmilar_movies[0:4],video_key=video_key, liked=liked, comments=comments)
 
 @app.route("/profile")
 @login_required
