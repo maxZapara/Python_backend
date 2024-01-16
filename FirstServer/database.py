@@ -1,18 +1,9 @@
 # from flask_login import UserMixin
 # from . import db
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy import Integer, String, Numeric
 from sqlalchemy.orm import Mapped, mapped_column
-from flask_login import LoginManager
 from flask_login import UserMixin
-
-login_manager = LoginManager()
-
-class Base(DeclarativeBase):
-  pass
-
-db = SQLAlchemy(model_class=Base)
+from app.extensions import db
 
 class User(db.Model,UserMixin):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)

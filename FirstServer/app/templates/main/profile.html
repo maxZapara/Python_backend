@@ -23,7 +23,7 @@
       <div class="simmilar">
         {% for Lmovies in movies %}
         <div class="rec-movie">
-          <a href="{{ url_for('show_movie_detalis',id=Lmovies.id) }}"><img  src="https://image.tmdb.org/t/p/w500{{Lmovies.poster_path}}"></img></a>
+          <a href="{{ url_for('main.show_movie_detalis',id=Lmovies.id) }}"><img  src="https://image.tmdb.org/t/p/w500{{Lmovies.poster_path}}"></img></a>
           <h2>{{ Lmovies.title }}</h2>
           <h3>{{ Lmovies.date }}</h3>
           <div class="rec-movie-rate">
