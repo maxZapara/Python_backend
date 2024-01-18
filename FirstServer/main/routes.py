@@ -3,7 +3,7 @@ from flask_login import login_required, current_user
 from api import get_upcoming,get_popular,get_top,get_movie_detalis,get_simmilar_detalis, get_video_key
 from flask import render_template, request
 from .forms import CommentForm
-from database import db, Likes, Comment
+from database import User, db, Likes, Comment
 
 
 @main.route("/")
@@ -74,7 +74,20 @@ def show_movie_detalis(id):
     videos=get_video_key(id)
     video_key=None
 
+    #comments=Comment.query.filter_by(movie_id=id).join(User, Comment.user_id == User.id).all()
     comments=Comment.query.filter_by(movie_id=id).all()
+
+# result = (
+#     session.query(User, Address)
+#     .join(Address, User.id == Address.user_id)
+#     .all()
+# )
+
+# # Print the result
+# for user, address in result:
+#     print(f"User: {user.name}, Address: {address.email}")
+
+
     print(comments)
 
     sent_movie = Likes.query.filter_by(title=movie.get('title'), user_id = current_user.id).first()
