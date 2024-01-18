@@ -71,10 +71,9 @@
         <button type="submit">Publicate</button>
       </form>
 
-      {% for comment, user in comments %}
+      {% for comment in comments %}
       
-      <p>user: {{ user.username }}</p>
-      <p>content: {{ comment.content }}</p>
+      <p>{{ comment.content }}</p>
 
       {% endfor %}
     </div>

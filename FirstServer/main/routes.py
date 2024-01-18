@@ -1,6 +1,6 @@
 from . import main
 from flask_login import login_required, current_user
-from api import get_upcoming,get_popular,get_top,get_movie_detalis,get_simmilar_detalis, get_video_key
+from .api import get_upcoming,get_popular,get_top,get_movie_detalis,get_simmilar_detalis, get_video_key
 from flask import render_template, request
 from .forms import CommentForm
 from database import User, db, Likes, Comment
