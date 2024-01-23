@@ -3,7 +3,7 @@ from flask_login import login_required, current_user
 from .api import get_upcoming,get_popular,get_top,get_movie_detalis,get_simmilar_detalis, get_video_key
 from flask import render_template, request
 from .forms import CommentForm
-from database import User, db, Likes, Comment
+
 
 
 @main.route("/")
@@ -29,7 +29,9 @@ def base2_path():
 @main.route("/likes_movies/<int:id>")
 @login_required
 def like_movie(id): 
-    from flask import jsonify        
+    from flask import jsonify
+    from database.liked import Likes
+    from app.extensions import db
     movie=get_movie_detalis(id)
     sent_movie = Likes.query.filter_by(title=movie.get('title'), user_id = current_user.id).first()
     if sent_movie:
@@ -59,6 +61,9 @@ def base3_path():
 @main.route('/movie/<int:id>', methods=['GET','POST'])
 @login_required
 def show_movie_detalis(id):
+    from database.liked import Likes
+    from app.extensions import db
+    from database.comment import Comment
     form=CommentForm()
     if form.validate_on_submit():
         content=form.content.data
@@ -76,17 +81,6 @@ def show_movie_detalis(id):
 
     #comments=Comment.query.filter_by(movie_id=id).join(User, Comment.user_id == User.id).all()
     comments=Comment.query.filter_by(movie_id=id).all()
-
-# result = (
-#     session.query(User, Address)
-#     .join(Address, User.id == Address.user_id)
-#     .all()
-# )
-
-# # Print the result
-# for user, address in result:
-#     print(f"User: {user.name}, Address: {address.email}")
-
 
     print(comments)
 
