@@ -1,6 +1,7 @@
 from flask import render_template, redirect
 from flask_login import login_required, logout_user
-from database import db,User
+from app.extensions import db
+from database.user import User
 from . import auth
 
 @auth.route("/logout")

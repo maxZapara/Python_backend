@@ -4,4 +4,3 @@
 - SQL Alchemy
 - Flask Login
 - HTML/CSS/JS
-
